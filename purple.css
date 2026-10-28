@@ -221,3 +221,10 @@ details[data-state=open] .accordion-chevron{transform:rotate(180deg);color:var(-
 .clients>span{font-size:14px;font-weight:600;line-height:1.6;color:var(--text);max-width:210px}
 .credits{justify-content:flex-end}
 @media(max-width:600px){.clients>span{font-size:13px;max-width:170px}}
+
+.footer-main > span.brand{cursor:default}
+.footer-socials{gap:8px}
+.social-link{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:10px;color:#c9bbd7}
+.social-link svg{display:block;width:20px;height:20px}
+.social-link:hover{color:var(--accent);background:rgba(190,151,255,.08)}
+@media(prefers-reduced-motion:no-preference){.social-link{transition:color .18s,background-color .18s}}

@@ -4,6 +4,10 @@ const imageSizes = {'fasol-year.png':[1280,942],'aureum-month.png':[997,950],'sp
 const arrow = (direction = 'up') => `<svg class="arrow" viewBox="0 0 24 24" aria-hidden="true">${direction === 'up' ? '<path d="M6 18 18 6M6 6h12v12"/>' : '<path d="M4 12h15m-6-6 6 6-6 6"/>'}</svg>`;
 const icon = name => `<img src="assets/${name}.svg" width="18" height="18" alt="" aria-hidden="true">`;
 const brand = `<span class="brand-icon" aria-hidden="true"><i></i><i></i><i></i></span><span>Viktor <span class="slash">/</span> Emotion</span>`;
+const socialIcons = {
+  x:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M18.901 1.153h3.68l-8.04 9.19L24 22.846h-7.406l-5.8-7.584-6.64 7.584H.47l8.6-9.835L0 1.154h7.594l5.243 6.932 6.064-6.933Zm-1.29 19.49h2.039L6.487 3.24H4.3l13.31 17.403Z"/></svg>',
+  telegram:'<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.7 3.4 18.3 20c-.2 1.2-.9 1.5-1.9.9l-5.2-3.8-2.5 2.4c-.3.3-.5.5-1 .5l.4-5.3L17.8 6c.4-.4-.1-.6-.6-.3L5.3 13.2.2 11.6c-1.1-.3-1.1-1.1.2-1.6L20.3 2.3c.9-.3 1.7.2 1.4 1.1Z"/></svg>'
+};
 const content = {
   ru: {
     skip:'К содержимому', nav:['Кейсы','Услуги','Подход'], contact:'Обсудить проект', menu:'Меню', language:'Язык сайта',
@@ -96,7 +100,7 @@ function render() {
       <section class="section faq-section container" aria-labelledby="faq-title"><div class="faq-layout"><div><p class="eyebrow">${t.faqLabel}</p><h2 class="section-title" id="faq-title">${t.faqTitle}</h2></div><div>${t.faq.map(f=>`<details class="faq"><summary>${f[0]}<span class="plus" aria-hidden="true">+</span></summary><p>${f[1]}</p></details>`).join('')}</div></div></section>
       <section class="contact container" id="contact" aria-labelledby="contact-title"><div class="contact-box"><div><p class="eyebrow">${t.contactLabel}</p><h2 id="contact-title">${t.contactTitle}</h2><p>${t.contactDescription}</p></div><div class="contact-actions"><a class="btn btn-primary" href="${TG}" target="_blank" rel="noopener noreferrer">${t.tgButton}${arrow()}</a><a class="text-link" href="${X}" target="_blank" rel="noopener noreferrer">${t.xLink}${arrow()}</a></div></div></section>
     </main>
-    <footer class="footer container"><div class="footer-main"><a class="brand" href="#top">${brand}</a><p>${t.footer}</p><div class="footer-socials"><a class="text-link" href="${X}" target="_blank" rel="noopener noreferrer">X${arrow()}</a></div></div><div class="credits"><span>STRATEGY. CONTENT. GROWTH.</span></div></footer>
+    <footer class="footer container"><div class="footer-main"><span class="brand">${brand}</span><p>${t.footer}</p><div class="footer-socials"><a class="social-link" href="${X}" target="_blank" rel="noopener noreferrer" aria-label="X — @Emotion_web3" title="X — @Emotion_web3">${socialIcons.x}</a><a class="social-link" href="${TG}" target="_blank" rel="noopener noreferrer" aria-label="Telegram — Emotioncrypto1" title="Telegram — Emotioncrypto1">${socialIcons.telegram}</a></div></div><div class="credits"><span>STRATEGY. CONTENT. GROWTH.</span></div></footer>
     <dialog class="dialog" aria-labelledby="dialog-title"><div class="dialog-header"><h2 id="dialog-title"></h2><button type="button" class="dialog-close" aria-label="${t.modalClose}">×</button></div><div class="dialog-body"></div></dialog>`;
   setupAccordions();
   applyShineBorders();
@@ -109,7 +113,7 @@ function renderAnalytics() {
   const shot = (image, index, metric) => {
     const [file, caption] = image;
     const [width,height] = imageSizes[file];
-    return `<figure class="analytics-shot"><figcaption><span class="analytics-shot-label">${caption}</span><span class="analytics-period">${index}</span></figcaption><a class="analytics-image-link" href="assets/${file}" target="_blank" rel="noopener noreferrer" aria-label="${ru ? 'Увеличить' : 'Enlarge'}: ${caption}"><span class="analytics-image-frame"><img src="assets/${file}" width="${width}" height="${height}" alt="${caption}. ${metric}" loading="lazy" decoding="async" data-analytics-image><span class="analytics-image-error" hidden>${t.imageError} ${t.openImage} ↗</span></span><span class="analytics-shot-footer"><span>${metric}</span><span class="analytics-enlarge">${ru ? 'Увеличить' : 'Enlarge'}${arrow()}</span></span></a></figure>`;
+    return `<figure class="analytics-shot"><figcaption><span class="analytics-shot-label">${caption}</span><span class="analytics-period">${index}</span></figcaption><a class="analytics-image-link" href="assets/${file}" target="_blank" rel="noopener noreferrer" aria-label="${ru ? 'Увеличить' : 'Enlarge'}: ${caption}"><span class="analytics-image-frame"><img src="assets/${file}" width="${width}" height="${height}" alt="${caption}. ${metric}" loading="lazy" decoding="async" data-analytics-image><span class="analytics-image-error" hidden>${t.imageError} ${t.openImage} ↗</span></span><span class="analytics-shot-footer"><span>${metric}</span></span></a></figure>`;
   };
   return `<section class="analytics-gallery" id="analytics" aria-labelledby="analytics-title">
     <div class="analytics-heading"><div><h3 id="analytics-title">${ru ? 'Результат — в цифрах,<br><span class="accent">не в обещаниях.</span>' : 'Results you<br><span class="accent">can look into.</span>'}</h3></div></div>
@@ -233,6 +237,12 @@ function closeMenu(returnFocus = false) {
   if (returnFocus) toggle.focus();
 }
 function bindEvents() {
+  document.querySelector('.header .brand').addEventListener('click',event => {
+    event.preventDefault();
+    closeMenu();
+    history.replaceState(null,'','#top');
+    window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'});
+  });
   document.querySelectorAll('[data-analytics-image]').forEach(img => {
     img.addEventListener('error',() => { img.hidden = true; img.nextElementSibling.hidden = false; });
   });
@@ -295,5 +305,6 @@ document.addEventListener('click',event=>{
 render();
 if (location.hash) {
   const target = document.getElementById(location.hash.slice(1));
-  if (target) requestAnimationFrame(()=>target.scrollIntoView({behavior:'instant'}));
+  if (location.hash === '#top') requestAnimationFrame(()=>window.scrollTo({top:0,behavior:'instant'}));
+  else if (target) requestAnimationFrame(()=>target.scrollIntoView({behavior:'instant'}));
 }
